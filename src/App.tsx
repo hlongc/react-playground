@@ -1,8 +1,13 @@
 import ReactPlayground from "./ReactPlayground";
+import { PlaygroundContextProvider } from "./Context";
 import "./App.less";
 
 function App() {
-  return <ReactPlayground />;
+  return (
+    <PlaygroundContextProvider>
+      <ReactPlayground />
+    </PlaygroundContextProvider>
+  );
 }
 
 export default App;

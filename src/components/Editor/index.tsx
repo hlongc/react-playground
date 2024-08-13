@@ -1,6 +1,9 @@
 import MonacoEditor, { EditorProps } from "@monaco-editor/react";
 import { createATA } from "./ata";
 import { editor } from "monaco-editor";
+import { PlaygroundContext } from "../../Context";
+import { useContext } from "react";
+import { ContextType } from "../../common";
 
 export interface EditorFile {
   name: string;
@@ -15,7 +18,11 @@ interface Props {
 }
 
 export default function Editor(props: Props) {
-  const { file, onChange, options } = props;
+  const { onChange, options } = props;
+  const { files, setFiles, selectedFileName, setSelectedFileName } =
+    useContext<ContextType>(PlaygroundContext);
+
+  const file = files[selectedFileName];
 
   return (
     <MonacoEditor
