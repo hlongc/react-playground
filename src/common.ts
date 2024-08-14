@@ -2,11 +2,11 @@ export interface File {
   name: string;
   value: string;
   language: string;
+  /** 当前文件是否能删除 */
+  forbiddenDelete?: boolean;
 }
 
-export interface Files {
-  [key: string]: File;
-}
+export type Files = File[];
 
 export interface ContextType {
   files: Files;

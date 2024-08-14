@@ -1,6 +1,6 @@
 import { createContext, PropsWithChildren, useState } from "react";
 import { fileName2Language } from "./utils";
-import { ContextType, Files, File } from "./common";
+import { ContextType, Files } from "./common";
 import { initFiles } from "./files";
 
 export const PlaygroundContext = createContext<ContextType>({
@@ -13,13 +13,10 @@ export const PlaygroundContextProvider = (props: PropsWithChildren) => {
   const [selectedFileName, setSelectedFileName] = useState<string>("main.tsx");
 
   const addFile = (name: string) => {
-    files[name] = {
-      name,
-      value: "",
-      language: fileName2Language(name),
-    };
-
-    setFiles({ ...files });
+    setFiles([
+      ...files,
+      { name, value: "", language: fileName2Language(name) },
+    ]);
   };
 
   const removeFile = (fileName: string) => {
@@ -28,30 +25,28 @@ export const PlaygroundContextProvider = (props: PropsWithChildren) => {
   };
 
   const updateFileName = (oldFileName: string, newFileName: string) => {
-    if (!files[oldFileName]) return;
-    const { [oldFileName]: oldValue, ...ret } = files;
-    const newFile = {
-      [newFileName]: {
-        ...oldValue,
-        name: newFileName,
-        language: fileName2Language(newFileName),
-      } as File,
-    };
+    const targetIndex = files.findIndex((file) => file.name === oldFileName);
+    if (targetIndex === -1) return;
+    const oldValue = files[targetIndex];
 
-    setFiles({ ...ret, ...newFile });
+    files.splice(targetIndex, 1, { ...oldValue, name: newFileName });
+
+    setFiles([...files]);
   };
 
   return (
     <PlaygroundContext.Provider
-      value={{
-        files,
-        setFiles,
-        selectedFileName,
-        setSelectedFileName,
-        addFile,
-        removeFile,
-        updateFileName,
-      }}
+      value={
+        {
+          files,
+          setFiles,
+          selectedFileName,
+          setSelectedFileName,
+          addFile,
+          removeFile,
+          updateFileName,
+        } as ContextType
+      }
     >
       {children}
     </PlaygroundContext.Provider>

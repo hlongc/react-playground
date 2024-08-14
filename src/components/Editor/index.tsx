@@ -1,9 +1,6 @@
 import MonacoEditor, { EditorProps } from "@monaco-editor/react";
 import { createATA } from "./ata";
 import { editor } from "monaco-editor";
-import { PlaygroundContext } from "../../Context";
-import { useContext } from "react";
-import { ContextType } from "../../common";
 
 export interface EditorFile {
   name: string;

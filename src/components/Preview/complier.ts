@@ -58,7 +58,7 @@ const getModuleFile = (files: Files, modulePath: string) => {
       moduleName = realModuleName;
     }
   }
-  return files[moduleName];
+  return files.find((item) => item.name === moduleName);
 };
 
 const json2Js = (file: File) => {
@@ -113,6 +113,6 @@ function customResolver(files: Files): PluginObj {
 }
 
 export const compile = (files: Files) => {
-  const main = files[ENTRY_FILE_NAME];
+  const main = files.find((item) => item.name === ENTRY_FILE_NAME)!;
   return babelTransform(ENTRY_FILE_NAME, main.value, files);
 };

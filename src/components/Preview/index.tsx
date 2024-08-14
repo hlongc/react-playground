@@ -1,6 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { PlaygroundContext } from "../../Context";
-import Editor from "../Editor";
 import { compile } from "./complier";
 import iframeRaw from "./iframe.html?raw";
 import { IMPORT_MAP_FILE_NAME } from "../../files";
@@ -15,11 +14,15 @@ export default function Preview() {
     setCompiledCode(res);
   }, [files]);
 
+  const importMapFile = files.find(
+    (item) => item.name === IMPORT_MAP_FILE_NAME
+  );
+
   const getIframeUrl = () => {
     const res = iframeRaw
       .replace(
         '<script type="importmap"></script>',
-        `<script type="importmap">${files[IMPORT_MAP_FILE_NAME].value}</script>`
+        `<script type="importmap">${importMapFile?.value}</script>`
       )
       .replace(
         '<script type="module" id="appSrc"></script>',
@@ -32,7 +35,7 @@ export default function Preview() {
 
   useEffect(() => {
     setIframeUrl(getIframeUrl());
-  }, [files[IMPORT_MAP_FILE_NAME].value, compiledCode]);
+  }, [importMapFile?.value, compiledCode]);
 
   return (
     <div style={{ height: "100%" }}>

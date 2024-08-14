@@ -3,6 +3,7 @@ import { PlaygroundContext } from "../../Context";
 import { ContextType } from "../../common";
 import styles from "./index.module.less";
 import { FileNameItem } from "./FileNameItem";
+import { File } from "../../common";
 
 export default function FileNameList() {
   const {
@@ -14,10 +15,10 @@ export default function FileNameList() {
     setSelectedFileName,
   } = useContext<ContextType>(PlaygroundContext);
 
-  const [tabs, setTabs] = useState<string[]>([""]);
+  const [tabs, setTabs] = useState<File["name"][]>([]);
 
   useEffect(() => {
-    setTabs(Object.keys(files));
+    setTabs(files.map((file) => file.name));
   }, [files]);
 
   return (
@@ -26,7 +27,7 @@ export default function FileNameList() {
         <FileNameItem
           key={fileName + index}
           value={fileName}
-          actived={selectedFileName === fileName}
+          selected={selectedFileName === fileName}
           onClick={() => setSelectedFileName(fileName)}
         />
       ))}

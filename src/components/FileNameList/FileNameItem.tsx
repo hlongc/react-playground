@@ -1,21 +1,21 @@
 import cs from "classnames";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 
 import styles from "./index.module.less";
 
 export interface FileNameItemProps {
   value: string;
-  actived: boolean;
+  selected: boolean;
   onClick: () => void;
 }
 
 export const FileNameItem: React.FC<FileNameItemProps> = (props) => {
-  const { value, actived, onClick } = props;
+  const { value, selected, onClick } = props;
   const [name, setName] = useState(value);
 
   return (
     <div
-      className={cs(styles["tab-item"], actived ? styles.actived : null)}
+      className={cs(styles["tab-item"], selected ? styles.selected : null)}
       onClick={onClick}
     >
       <span>{name}</span>
