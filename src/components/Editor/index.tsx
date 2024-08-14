@@ -1,6 +1,9 @@
-import MonacoEditor, { EditorProps } from "@monaco-editor/react";
+import MonacoEditor, { EditorProps, loader } from "@monaco-editor/react";
 import { createATA } from "./ata";
+import * as monaco from "monaco-editor";
 import { editor } from "monaco-editor";
+
+loader.config({ monaco });
 
 export interface EditorFile {
   name: string;

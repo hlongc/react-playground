@@ -10,7 +10,6 @@ export default function Preview() {
 
   useEffect(() => {
     const res = compile(files);
-    console.log("res", res);
     setCompiledCode(res);
   }, [files]);
 
@@ -48,9 +47,6 @@ export default function Preview() {
           border: "none",
         }}
       />
-      {/* <Editor
-        file={{ name: "dist.js", value: compiledCode, language: "javascript" }}
-      /> */}
     </div>
   );
 }
