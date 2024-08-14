@@ -18,11 +18,7 @@ interface Props {
 }
 
 export default function Editor(props: Props) {
-  const { onChange, options } = props;
-  const { files, setFiles, selectedFileName, setSelectedFileName } =
-    useContext<ContextType>(PlaygroundContext);
-
-  const file = files[selectedFileName];
+  const { onChange, options, file } = props;
 
   return (
     <MonacoEditor

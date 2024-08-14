@@ -4,13 +4,13 @@ import { ContextType, Files, File } from "./common";
 import { initFiles } from "./files";
 
 export const PlaygroundContext = createContext<ContextType>({
-  selectedFileName: "App.tsx",
+  selectedFileName: "main.tsx",
 } as ContextType);
 
 export const PlaygroundContextProvider = (props: PropsWithChildren) => {
   const { children } = props;
   const [files, setFiles] = useState<Files>(initFiles);
-  const [selectedFileName, setSelectedFileName] = useState<string>("App.tsx");
+  const [selectedFileName, setSelectedFileName] = useState<string>("main.tsx");
 
   const addFile = (name: string) => {
     files[name] = {
