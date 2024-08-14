@@ -4,6 +4,7 @@ export interface File {
   language: string;
   /** 当前文件是否能删除 */
   forbiddenDelete?: boolean;
+  position?: "left" | "right";
 }
 
 export type Files = File[];

@@ -37,5 +37,6 @@ export const initFiles: Files = [
     language: fileName2Language(IMPORT_MAP_FILE_NAME),
     value: importMap,
     forbiddenDelete: true,
+    position: "right",
   },
 ];

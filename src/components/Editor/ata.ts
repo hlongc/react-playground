@@ -10,7 +10,6 @@ export function createATA(
     logger: console,
     delegate: {
       receivedFile: (code, path) => {
-        console.log("自动下载的包", path);
         onDownloadFile(code, path);
       },
     },
