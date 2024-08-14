@@ -2,6 +2,7 @@ import cs from "classnames";
 import React, { useRef, useState } from "react";
 import { Popconfirm } from "antd";
 import styles from "./index.module.less";
+import { useMemoizedFn } from "ahooks";
 
 export interface FileNameItemProps {
   value: string;
@@ -40,6 +41,11 @@ export const FileNameItem: React.FC<FileNameItemProps> = (props) => {
     }, 40);
   };
 
+  const onSave = useMemoizedFn(() => {
+    setEditing(false);
+    onEditDone?.(name.trim());
+  });
+
   return (
     <>
       <div
@@ -52,9 +58,11 @@ export const FileNameItem: React.FC<FileNameItemProps> = (props) => {
             className={styles["tabs-item-input"]}
             value={name}
             onChange={(e) => setName(e.target.value)}
-            onBlur={() => {
-              setEditing(false);
-              onEditDone?.(name.trim());
+            onBlur={onSave}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                onSave();
+              }
             }}
           />
         ) : (
