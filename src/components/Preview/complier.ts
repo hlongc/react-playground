@@ -5,7 +5,8 @@ import { PluginObj } from "@babel/core";
 
 export const beforeTransformCode = (filename: string, code: string) => {
   let _code = code;
-  const regexReact = /import\s+React/g;
+  const regexReact = /import\s+React\s+from\s+['"][^'"]+['"]/g;
+
   // 对jsx、tsx文件增加react引入
   if (
     (filename.endsWith(".jsx") || filename.endsWith(".tsx")) &&
@@ -22,6 +23,7 @@ export const babelTransform = (
   files: Files
 ) => {
   const reactCode = beforeTransformCode(filename, code);
+
   let result = "";
   try {
     result = transform(reactCode, {
