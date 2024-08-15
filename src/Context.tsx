@@ -50,7 +50,11 @@ export const PlaygroundContextProvider = (props: PropsWithChildren) => {
       if (targetIndex === -1) return;
       const oldValue = files[targetIndex];
 
-      files.splice(targetIndex, 1, { ...oldValue, name: newFileName });
+      files.splice(targetIndex, 1, {
+        ...oldValue,
+        name: newFileName,
+        language: fileName2Language(newFileName),
+      });
 
       setFiles([...files]);
     }
