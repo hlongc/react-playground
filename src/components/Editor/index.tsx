@@ -2,6 +2,8 @@ import MonacoEditor, { EditorProps, loader } from "@monaco-editor/react";
 import { createATA } from "./ata";
 import * as monaco from "monaco-editor";
 import { editor } from "monaco-editor";
+import { PlaygroundContext } from "../../Context";
+import { useContext } from "react";
 
 loader.config({ monaco });
 
@@ -19,6 +21,7 @@ interface Props {
 
 export default function Editor(props: Props) {
   const { onChange, options, file } = props;
+  const { theme } = useContext(PlaygroundContext);
 
   return (
     <MonacoEditor
@@ -35,6 +38,7 @@ export default function Editor(props: Props) {
           verticalScrollbarSize: 6,
           horizontalScrollbarSize: 6,
         },
+        theme: `vs-${theme}`,
         ...options,
       }}
       onMount={(editor, monaco) => {

@@ -9,7 +9,11 @@ export interface File {
 
 export type Files = File[];
 
+export type ThemeType = "light" | "dark";
+
 export interface ContextType {
+  theme: ThemeType;
+  setTheme: (theme: ThemeType) => void;
   files: Files;
   setFiles: (files: Files) => void;
   selectedFileName: string;

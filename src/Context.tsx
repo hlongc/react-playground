@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useState } from "react";
 import { useMemoizedFn } from "ahooks";
 import { fileName2Language } from "./utils";
-import { ContextType, Files } from "./common";
+import { ContextType, Files, ThemeType } from "./common";
 import { initFiles } from "./files";
 
 export const PlaygroundContext = createContext<ContextType>({
@@ -11,6 +11,7 @@ export const PlaygroundContext = createContext<ContextType>({
 export const PlaygroundContextProvider = (props: PropsWithChildren) => {
   const { children } = props;
   const [files, setFiles] = useState<Files>(initFiles);
+  const [theme, setTheme] = useState<ThemeType>("light");
   const [selectedFileName, setSelectedFileName] = useState<string>("main.tsx");
 
   const addFile = useMemoizedFn((name: string) => {
@@ -49,6 +50,8 @@ export const PlaygroundContextProvider = (props: PropsWithChildren) => {
           addFile,
           removeFile,
           updateFileName,
+          theme,
+          setTheme,
         } as ContextType
       }
     >
