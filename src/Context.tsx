@@ -1,6 +1,6 @@
-import { createContext, PropsWithChildren, useState } from "react";
+import { createContext, PropsWithChildren, useEffect, useState } from "react";
 import { useMemoizedFn } from "ahooks";
-import { fileName2Language } from "./utils";
+import { fileName2Language, compress, uncompress } from "./utils";
 import { ContextType, Files, ThemeType } from "./common";
 import { initFiles } from "./files";
 
@@ -8,11 +8,28 @@ export const PlaygroundContext = createContext<ContextType>({
   selectedFileName: "main.tsx",
 } as ContextType);
 
+const getFilesFromHash = () => {
+  let files: Files | undefined;
+  try {
+    const hash = uncompress(window.location.hash.slice(1));
+    files = JSON.parse(hash);
+  } catch (error) {
+    console.error("解析hash错误", error);
+  }
+
+  return files;
+};
+
 export const PlaygroundContextProvider = (props: PropsWithChildren) => {
   const { children } = props;
-  const [files, setFiles] = useState<Files>(initFiles);
+  const [files, setFiles] = useState<Files>(getFilesFromHash() ?? initFiles);
   const [theme, setTheme] = useState<ThemeType>("light");
   const [selectedFileName, setSelectedFileName] = useState<string>("main.tsx");
+
+  useEffect(() => {
+    const hash = compress(JSON.stringify(files));
+    window.location.hash = hash;
+  }, [files]);
 
   const addFile = useMemoizedFn((name: string) => {
     setFiles([
