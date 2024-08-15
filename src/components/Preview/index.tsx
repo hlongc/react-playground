@@ -1,9 +1,10 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { PlaygroundContext } from "../../Context";
-import { compile } from "./complier";
+import CompilerWorker from "./complier.worker?worker";
 import iframeRaw from "./iframe.html?raw";
 import { IMPORT_MAP_FILE_NAME } from "../../files";
 import { Message } from "../Message";
+import { debounce } from "lodash-es";
 
 interface MessageData {
   data: {
@@ -16,10 +17,25 @@ export default function Preview() {
   const { files } = useContext(PlaygroundContext);
   const [compiledCode, setCompiledCode] = useState("");
 
+  const compilerWorkerRef = useRef<Worker>();
+
   useEffect(() => {
-    const res = compile(files);
-    setCompiledCode(res);
-  }, [files]);
+    if (!compilerWorkerRef.current) {
+      compilerWorkerRef.current = new CompilerWorker();
+      compilerWorkerRef.current.addEventListener("message", ({ data }) => {
+        if (data.type === "COMPILED_CODE") {
+          setCompiledCode(data.data);
+        }
+      });
+    }
+  }, []);
+
+  useEffect(
+    debounce(() => {
+      compilerWorkerRef.current?.postMessage(files);
+    }, 500),
+    [files]
+  );
 
   const importMapFile = files.find(
     (item) => item.name === IMPORT_MAP_FILE_NAME
